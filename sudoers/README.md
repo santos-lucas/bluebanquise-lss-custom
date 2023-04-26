@@ -7,20 +7,19 @@ By default, it will remove all the files on /etc/sudoers.d/* to ensure that only
 
 ```yaml
 ---
-sudoers: groups:
-group1:
-policy: "ALL=(root) NOPASSWD:" allow:
--	/usr/sbin/iotop
--	/usr/bin/perf
--	/usr/bin/nvidia-smi
--	/usr/bin/strace bullatos:
-users:
-bulladm:
-policy: "ALL=(root) NOPASSWD:" allow:
--	/opt/PMSM/bin/pmsmMC.py
--	/bin/sinfo
--	/usr/sbin/ibstat default:
-policy: "ALL=(root) NOPASSWD:" deny:
--	"/bin/su"
--	"/usr/bin/*sh"
+sudoers: 
+  groups:
+    group1:
+      policy: "ALL=(root) NOPASSWD:" 
+      allow:
+        -	/usr/sbin/iotop
+        -	/usr/bin/perf
+        -	/usr/bin/nvidia-smi
+        -	/usr/bin/strace 
+  users:
+    user1:
+      policy: "ALL=(root) NOPASSWD:" 
+      deny:
+        -	/bin/sinfo
+        -	/usr/sbin/ibstat 
 ```
