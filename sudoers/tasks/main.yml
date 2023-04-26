@@ -28,6 +28,7 @@
     mode: '0644'
   with_items:
     "{{hostvars[inventory_hostname]['sudoers']['groups']}}"
+  when: "hostvars[inventory_hostname]['sudoers']['groups'] is defined"
 
 - name: Configure user specific sudoers
   template: 
@@ -38,3 +39,4 @@
     mode: '0644'
   with_items:
     "{{hostvars[inventory_hostname]['sudoers']['users']}}"
+  when: "hostvars[inventory_hostname]['sudoers']['users'] is defined"
