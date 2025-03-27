@@ -1,0 +1,27 @@
+- name: "Create '/etc/slurm/prolog.d' dir if does not exists"
+  ansible.builtin.file:
+    path: /etc/slurm/prolog.d
+    state: directory
+    mode: '0755'
+
+- name: "Create '/etc/slurm/epilog.d' dir if does not exists"
+  ansible.builtin.file:
+    path: /etc/slurm/epilog.d
+    state: directory
+    mode: '0755'  
+
+- name: "Create main prolog file"
+  ansible.builtin.copy:
+    src: prolog.sh
+    dest: /etc/slurm/prolog.sh
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: "Create main epilog file"
+  ansible.builtin.copy:
+    src: epilog.sh
+    dest: /etc/slurm/epilog.sh
+    owner: root
+    group: root
+    mode: '0750'

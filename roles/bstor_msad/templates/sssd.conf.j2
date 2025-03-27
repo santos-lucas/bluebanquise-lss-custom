@@ -1,0 +1,40 @@
+[sssd]
+services = nss, pam, autofs
+config_file_version = 2
+domains = petrobras.biz
+
+[nss]
+filter_users = root
+
+[pam]
+
+[autofs]
+
+[domain/petrobras.biz]
+ad_domain = petrobras.biz
+ad_enabled_domains = petrobras.biz
+krb5_realm = PETROBRAS.BIZ
+realmd_tags = manages-system joined-with-adcli
+cache_credentials = True
+id_provider = ad
+access_provider = ad
+auth_provider = ad
+chpass_provider = ad
+autofs_provider = ad
+krb5_store_password_if_offline = True
+default_shell = /bin/bash
+override_shell = /bin/bash
+ldap_sasl_authid = hostname$
+ldap_id_mapping = False
+use_fully_qualified_names = False
+fallback_homedir = /home/%u@%d
+dyndns_force_tcp = True
+dyndns_update = False
+dyndns_update_ptr = False
+ad_gpo_access_control = disabled
+ldap_autofs_map_object_class = nisMap
+ldap_autofs_entry_object_class = nisObject
+ldap_autofs_map_name = nisMapName
+ldap_autofs_entry_key = cn
+ldap_autofs_entry_value = nisMapEntry
+ldap_user_gecos = displayName

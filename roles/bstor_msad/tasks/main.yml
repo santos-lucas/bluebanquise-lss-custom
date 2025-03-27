@@ -1,0 +1,61 @@
+---
+- name: update UID_MAX 
+  ansible.builtin.lineinfile:
+  path: /etc/login.defs
+  regexp: '^UID_MAX.*'
+  line: UID_MAX 9999999
+  owner: root
+  group: root
+  mode: '0644'
+
+- name: update GID_MAX 
+  ansible.builtin.lineinfile:
+  path: /etc/login.defs
+  regexp: '^GID_MAX.*'
+  line: GID_MAX 9999999
+  owner: root
+  group: root
+  mode: '0644'
+
+- name: install packages
+  package: 
+    name: ['realmd', 'samba-common-tools', 'sssd', 'adcli', krb5-workstation] 
+    state: present
+
+- name: copy keyfile to /tmp
+  copy:
+    src: petro.keytab
+    dest: /tmp/sahpc.keytab
+    mode: '0640'
+    owner: root
+    group: root
+
+- name: Authenticate using keytab
+  command: kinit -k -t /tmp/sahpc.keytab sahpc@PETROBRAS.BIZ
+
+- name: Join realm
+  command: >
+    realm join --computer-ou="ou=XXXX,ou=XXXXX,ou=xxxxxx,ou=xxxxxxxx,dc=xxxxxxxxx,dc=xxxxxxx"
+               --computer-name="{{ ansible_hostname }}"
+               --os-name=CentOS
+               --os-version=7
+               --membership-software=adcli
+               --automatic-id-mapping=no
+               petrobras.biz
+
+- name: render /etc/sssd/sssd.conf
+  template:
+    src: 'sssd.conf.j2'
+    dest: /etc/sssd/sssd.conf
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: render /etc/krb5.conf
+  template:
+    src: 'krb5.conf.j2'
+    dest: /etc/krb5.conf
+    mode: '0644'
+    owner: root
+    group: root
+  
